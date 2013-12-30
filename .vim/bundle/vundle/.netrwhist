@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/haukur/Code/Admittor/db/migrate'
+let g:netrw_dirhist_2='/Users/haukur/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/matrix'
+let g:netrw_dirhist_3='/Users/haukur/.rvm/rubies/ruby-2.0.0-p353/lib/ruby/2.0.0/json'
+let g:netrw_dirhist_4='/Users/haukur/Code/Probased/app/assets/stylesheets'
+let g:netrw_dirhist_5='/Users/haukur/Code/Probased/app/assets/javascripts/videos'
