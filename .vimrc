@@ -172,3 +172,12 @@ xnoremap . :normal.<cr>
 
 " Repeat macro on every line
 xnoremap @ :normal@
+
+" Enter a new line with enter in normal mode
+nnoremap <enter> i<enter>
+
+" Remove a character with backspace in normal mode
+nnoremap <backspace> i<backspace><right><esc>
+
+" Add a space with space in normal mode
+nnoremap <space> i<space><right><esc>
