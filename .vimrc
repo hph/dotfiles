@@ -35,6 +35,7 @@ set hls              "hlsearch: highlight search matches
 set sb               "splitbelow: open a new split below the current one
 set spr              "splitright: open a new split on the right of the current one
 set tm=500           "timeoutlen: delay before O works and leader commands can be used
+set backspace=indent,eol,start "fix not being able to delete with backspace in insert mode
 
 "
 " Vundle
@@ -42,9 +43,10 @@ set tm=500           "timeoutlen: delay before O works and leader commands can b
 
 " Settings
 filetype off
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
 
 " Colorscheme and syntax highlighting
 Bundle 'altercation/vim-colors-solarized'
@@ -58,6 +60,16 @@ Bundle 'Lokaltog/vim-easymotion'
 let g:EasyMotion_leader_key = '<Leader>'
 hi link EasyMotionTarget WarningMsg
 hi link EasyMotionShade  Comment
+nmap s <Plug>(easymotions2)
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+
+" Quick save
+nnoremap <Leader>, :w<CR>
+nnoremap <Leader>. :wq<CR>
 
 " Post a Gist without leaving Vim
 Bundle 'mattn/webapi-vim'
@@ -95,9 +107,28 @@ hi SignColumn ctermbg=Black
 " Open files with ease
 Bundle 'kien/ctrlp.vim'
 
+Bundle 'guns/vim-clojure-static'
+
+Bundle 'rizzatti/dash.vim'
+
+Bundle 'digitaltoad/vim-jade'
+
+Bundle 'wincent/command-t'
+set wildignore+=*~
+set wildignore+=node_modules/**
+set wildignore+=bower_components/**
+
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+Bundle 'garbas/vim-snipmate'
+Bundle 'honza/vim-snippets'
+
+
 " Not used for now
 "Bundle 'Valloric/YouCompleteMe'
 "Bundle 'wting/gitsessions.vim'
+
+call vundle#end()
 
 " Set filetype to the correct value after all Vundle settings
 filetype plugin indent on
@@ -107,17 +138,22 @@ filetype plugin indent on
 "
 
 " Automatically remove trailing whitespace
-au BufWritePre *.rb,*.py :%s/\s\+$//e
+"au BufWritePre *.rb,*.py,*.js :%s/\s\+$//e
 
 " Set indentation level to two spaces for the given filetypes
-au FileType ruby,less,coffee,javascript,eruby,html setl sts=2 sw=2 tw=200
+au FileType ruby,less,coffee,javascript,eruby,html,jade,sass,scss,css setl sts=2 sw=2 tw=200
 au FileType ruby setl fo-=r et
 au FileType eruby,html setl tw=200
+au FileType tex setl tw=300
 
 " Specific filetype resets
-au BufNewFile,BufRead Gemfile,Guardfile,Vagrantfile,Rakefile set ft=ruby
+au BufNewFile,BufRead Gemfile,Guardfile,Vagrantfile,Rakefile,config.ru set ft=ruby
+au BufNewFile,BufRead *.jade set ft=jade
 au BufNewFile,BufRead *.less set ft=less
 au BufNewFile,BufRead *.coffee set ft=coffee
+au BufNewFile,BufRead *.clj set ft=clojure
+au BufNewFile,BufRead *.md set ft=markdown
+au BufNewFile,BufRead *.jade set ft=jade
 
 " Automatically resize splits when window is resized
 au VimResized * wincmd =
@@ -144,6 +180,9 @@ nnoremap <silent> <Leader>h :noh<CR>
 
 " Show a git diff for the open file (press q to quit)
 nnoremap <silent> <Leader>d :!git diff %<CR><redraw>
+
+" Show a git diff for the current directory
+nnoremap <silent> <Leader>D :!git diff<CR><redraw>
 
 " Shortcuts to split window
 nnoremap _ :spl<space>
@@ -173,11 +212,11 @@ xnoremap . :normal.<cr>
 " Repeat macro on every line
 xnoremap @ :normal@
 
-" Enter a new line with enter in normal mode
-nnoremap <enter> i<enter>
+"
+" Other
+"
 
-" Remove a character with backspace in normal mode
-nnoremap <backspace> i<backspace><right><esc>
-
-" Add a space with space in normal mode
-nnoremap <space> i<space><right><esc>
+" Fix loading JVM when using JRuby
+if !empty(matchstr($MY_RUBY_HOME, 'jruby'))
+  let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
+endif
